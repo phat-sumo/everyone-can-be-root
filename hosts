@@ -1,0 +1,11 @@
+127.0.0.1	localhost
+127.0.1.1	hugo.usu.edu	hugo
+129.123.76.161	matrix.bluezone.usu.edu	one	matrix.usu.edu
+129.123.76.161  one.matrix.bluezone.usu.edu	one.matrix.usu.edu	one.usu.edu
+129.123.76.161  two.matrix.bluezone.usu.edu	two.matrix.usu.edu	two.usu.edu
+129.123.76.161  three.matrix.bluezone.usu.edu	three.matrix.usu.edu	three.usu.edu
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
