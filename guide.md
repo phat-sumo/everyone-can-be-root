@@ -170,6 +170,8 @@ TODO: Include images
 
 Create a new machine:
 
+![alt text](./scrots/virtualbox-main-screen.png)
+
 Allocate RAM. Remember, this allocation will be assigned whenever the virtual machine is turned on so it will come from the hypervisor’s total and not be available for other system processes. We chose 4gb per machine, but 2GB should be sufficient.
 
 Create a virtual hard drive for the new machine. We chose VDI, 40gb, and dynamic allocation.
@@ -196,7 +198,7 @@ sudo sysctl -p
 
 On the new machine we will use our admin user to modify /etc/skel/. The contents of /etc/skel/  determine the initial contents of a users home directory.
 
-> Tip: You can use `sudo su` to switch users and become 'root', the superuser. This removes the requirement to use `sudo` in priveleged directories. *Be cautious when executing commands as root, as they will not require a password to execute and may not provide warnings for their consequences.* Type `exit` or press Ctrl+d to return to your normal user.
+> Note: You can use `sudo su` to switch users and become 'root', the superuser. This removes the requirement to use `sudo` in priveleged directories. **Be cautious when executing commands as root, as they will not require a password to execute and may not provide warnings for their consequences.** Type `exit` or press Ctrl+d to return to your normal user.
 
 ```
 sudo su 
