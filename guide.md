@@ -166,23 +166,35 @@ Start virtualbox:
 virtualbox
 ```
 
-TODO: Include images
-
-Create a new machine:
 
 ![alt text](./scrots/virtualbox-main-screen.png)
 
+Simply click the blue 'New' button to create a new VM, then give it a name.
+
+![alt text](./scrots/virtualbox-name-vm.png)
+
+
 Allocate RAM. Remember, this allocation will be assigned whenever the virtual machine is turned on so it will come from the hypervisor’s total and not be available for other system processes. We chose 4gb per machine, but 2GB should be sufficient.
+
+![alt text](./scrots/virtualbox-memory-allocation.png)
 
 Create a virtual hard drive for the new machine. We chose VDI, 40gb, and dynamic allocation.
 
-After the hard drive has been created, we will adjust the settings on our newly created VM. Remember to make all the configuration changes before clicking ‘ok’ or you will have to re-open the settings tab to finish.
+![alt text](./scrots/virtualbox-disk-type.png)
+
+![alt text](./scrots/virtualbox-storage-allocation.png)
+
+After the hard drive has been created, we will adjust the settings on our newly created VM. Remember to make all the configuration changes before clicking ‘Ok’ or you will have to re-open the settings tab to finish.
+
+
 
 Under the 'System' tab, you can increase the number of processors.
 
 Under 'Storage', click on the CD icon. Check the Live CD/DVD box and click on the 2nd CD icon crop down menu. Select the iso that was downloaded earlier.
 
 Under the network tab, Adapter 1 will show NAT. We want to enable adapter 2. Click the tab for adapter 2, select the check mark to “Enable network adapter”. Select “host-only adapter” from the drop down menu.  
+
+![alt text](./scrots/virtualbox-network-tab.png)
 
 Now we can click the start arrow on virtual box and install Ubuntu from the iso to our virtual machine’s hard drive. For example, we will install openssh during installation, and apache2 from the command line. We set up an apache server on this machine with the default values. We also created a second machine following the same steps as before.
 
