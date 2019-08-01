@@ -146,7 +146,19 @@ We need an A record to connect the name to the IP address. Then, we can add any 
 
 For our presentation, our hosts file looks like this:
 
-TODO: add simplified hosts file for markdown
+```
+192.168.56.101	one.matrix.bluezone.usu.edu	one.matrix.usu.edu	one.usu.edu
+192.168.56.102	two.matrix.bluezone.usu.edu	two.matrix.usu.edu	two.usu.edu
+192.168.56.104	three.matrix.bluezone.usu.edu	three.matrix.usu.edu	three.usu.edu
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+```
+
+
+
 
 Notice how all those names resolve to the same IP address!
 
