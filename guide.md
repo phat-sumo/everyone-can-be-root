@@ -196,17 +196,15 @@ Under the network tab, Adapter 1 will show NAT. We want to enable adapter 2. Cli
 
 ![alt text](./scrots/virtualbox-network-tab.png)
 
+Adding the host only adapter will give each virtual machine an address on the 192.168.56.0/24 subnet. Typically, the host will be 192.168.56.1 and the guests will start at 192.168.56.101.
+
 Now we can click the start arrow on virtual box and install Ubuntu from the iso to our virtual machine’s hard drive. For example, we will install openssh during installation, and apache2 from the command line. We set up an apache server on this machine with the default values. We also created a second machine following the same steps as before.
 
-Now we can set up nginx as proxy server. Nginx lives in /etc/nginx. The file /etc/nginx/sites-available/default is link to the sites-enabled folder so changes made to sites-available/default automatically makes things enabled. We will use nginx as a reverse proxy to mangle http packets sent to the physical machine’s ip address and forward them to the ip address of the virtual machine webservers. NOTE: These configurations work on a complete match principle. So while all virtual servers are listening for [anything]:80[port] the match comes from the server name. Multiple names can be given. Proxy_pass gives the internal ip of the virtual machines (from setting up the host-only adapter)
+TODO: link images for this section
 
-Next we will set up ip forwarding. Modify the /etc/sysctl.conf file by adding
-net.ipv4.ip_forward = 1
-to the end of the file. Then run 
+TODO: go over everything below this section. 
 
-```
-sudo sysctl -p
-```
+On the new machine it may be nice to have some files automatically added when create new users to run the Vms.
 
 On the new machine we will use our admin user to modify /etc/skel/. The contents of /etc/skel/  determine the initial contents of a users home directory.
 
@@ -220,21 +218,65 @@ mkdir Documents
 mkdir Downloads
 ```
 
+On the virtual machine, view the networking information with the ip addr command.
+
+![alt text](./scrots/ip-addr-output.png)
+
+9.b We can view the default route with
+
+# ip route show default
+
+In this case, enp0s8 is the adapter to the 192.168.56.1 gateway, so we will make it the default route with this commnad:
+
+# ip route add default via 192.168.56.1 dev enp0s8
+
+9.c. If we forward anything through our host, we want to be able to respond. We use iptables to allow a response from our internal network. [On the host]
+
+# iptables -t nat -A POSTROUTING -o eno2 -j MASQUERADE
+
+Remember the -o flag is the outgoing interface. Entering ip addr on the hypervisor [host] show that eno2 is the outward facing network adaptor
+
+![alt text](./scrots/ip-addr-host-output.png)
 
 
 
+10.  Now we can set up nginx as proxy server. Nginx lives in /etc/nginx. The file /etc/nginx/sites-available/default is link to the sites-enabled folder so changes made to sites-available/default automatically makes things enabled. We will use nginx as a reverse proxy to mangle http packets sent to the physical machine’s ip address and forward them to the ip address of the virtual machine webservers. NOTE: These configurations work on a complete match principle. So while all virtual servers are listening for [anything]:80[port] the match comes from the server name. Multiple names can be given. Proxy_pass gives the internal ip of the virtual machines (from setting up the host-only adapter)
+
+11. iptables can now be used to forward other services into our internal network. We have set up a php server running on server three.matrix.bluezone.usu.edu at port 8000. To forward traffic on port 8000 we add the command
+
+# iptables -t nat -A PREROUTING -p tcp --dport 8000 -j DNAT –to-destination 192.168.56.104:8000
+ 
+For another example, we set up a samba server on the same host. Samba needs TCP 139, 445 and UDP 137, 138 to function. So we give the host the following iptables command:
+
+# iptables -t nat -A PREROUTING -p tcp --dport 139 -j DNAT --to-destination 192.168.56.104:139
+# iptables -t nat -A PREROUTING -p tcp --dport 445 -j DNAT --to-destination 192.168.56.104:445
+# iptables -t nat -A PREROUTING -p udp --dport 137 -j DNAT --to-destination 192.168.56.104:137
+# iptables -t nat -A PREROUTING -p udp --dport 138 -j DNAT --to-destination 192.168.56.104:138
+
+Remember, because we only have one outward facing address, we are limited to 64000 ports. So we  must do some planning with the services we offer. Either use a reverse proxy (ideal for web traffic), forward the common port to the server handling the traffic, or have a server listening for a non-traditional port and forward that port.
+
+![alt text](./scrots/sites-available-default.png)
 
 
 
+Unfortunately, how routing information is stored varies with Linux distributions we are not going to show how to script loading these configurations on startup. However, we will use this opportunity to demonstrate the linux man command. For example the command
 
 
+# man iptables-save 
 
+Displays a help page like this:
 
+!IMAGE
+![alt text](./scrots/man-iptables-save.png)
 
+TODO:
+* jumpbox ssh -J
+* backups with cp (test)
+* snapshots
 
-
-
-
+extras- 
+* set up vm as a jump box
+* other adapter options (bridged for campus lan, etc;)
 
 
 
